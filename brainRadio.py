@@ -9,6 +9,8 @@ import rethinkdb as r
 from pythonosc import dispatcher
 from pythonosc import osc_server
 
+absId = 0
+
 def eeg_handler(unused_addr, args, ch0, ch1, ch2, ch3, ch4):
     #print("EEG (uV) per channel: ", ch0, ch1, ch2, ch3, ch4)
     time = r.now().to_epoch_time();
@@ -23,34 +25,40 @@ def acc_handler(unused_addr, args, acc_x, acc_y, acc_z):
 
 ##Absolute##
 def delta_absolute_handler(unused_addr, args, val):
-	#print ("ThetaAbs: ", val)
+	#print ("DeltaAbs: ", val)
+    global absId
     time = r.now().to_epoch_time();
     with r.connect('localhost', 28015) as conn:
-        r.db('EEG').table('deltaAbs').insert([{'time':time, 'val':val}]).run(conn)    
+        r.db('EEG').table('deltaAbs').insert([{'time':time, 'delta':val, 'absId':absId}]).run(conn)    
 
 def theta_absolute_handler(unused_addr, args, val):
 	#print ("ThetaAbs: ", val)
+    global absId
     time = r.now().to_epoch_time();
     with r.connect('localhost', 28015) as conn:
-        r.db('EEG').table('thetaAbs').insert([{'time':time, 'val':val}]).run(conn)    
+        r.db('EEG').table('thetaAbs').insert([{'time':time, 'theta':val, 'absId':absId}]).run(conn)    
 
 def alpha_absolute_handler(unused_addr, args, val):
 	#print ("AlphaAbs: ", val)
+    global absId
     time = r.now().to_epoch_time();
     with r.connect('localhost', 28015) as conn:
-        r.db('EEG').table('alphaAbs').insert([{'time':time, 'val':val}]).run(conn)
+        r.db('EEG').table('alphaAbs').insert([{'time':time, 'alpha':val, 'absId':absId}]).run(conn)
 
 def beta_absolute_handler(unused_addr, args, val):
 	#print ("BetaAbs: ", val)
+    global absId
     time = r.now().to_epoch_time();
     with r.connect('localhost', 28015) as conn:
-        r.db('EEG').table('betaAbs').insert([{'time':time, 'val':val}]).run(conn)
+        r.db('EEG').table('betaAbs').insert([{'time':time, 'beta':val, 'absId':absId}]).run(conn)
 
 def gamma_absolute_handler(unused_addr, args, val):
 	#print ("GammaAbs: ", val)
+    global absId
     time = r.now().to_epoch_time();
     with r.connect('localhost', 28015) as conn:
-        r.db('EEG').table('gammaAbs').insert([{'time':time, 'val':val}]).run(conn)
+        r.db('EEG').table('gammaAbs').insert([{'time':time, 'gamma':val, 'absId':absId}]).run(conn)
+    absId += 1
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

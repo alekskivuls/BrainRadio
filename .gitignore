@@ -1,2 +1,20 @@
 #Rethind database
-/rethinkdb_data
+rethinkdb_data
+
+#Eclipse
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+.project
+.classpath
+
+#oscP5 Java Library
+oscP5.jar
